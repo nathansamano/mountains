@@ -3,22 +3,24 @@ load('drawFuncs.js');
 load('TextCell.js');
 load('UnderlinedCell.js');
 load('RTextCell.js');
-
+load('CTextCell.js');
+// I AM ADDING A COMMENT HERE FOR MERGING
 // Here's where you load the dataset
 // load('mountains.js');
 // load('houses.js');
-load('larder.js');
+//load('larder.js');
+load('cars.js');
 
 // This code does date recognition so they can be right-justified
 //   You can turn it on and off
-var rightJustifyDates = false;
+var rightJustifyDates = true;
 // This regular expression contains logic-by-pattern to identify a date
-var dateReg = (rightJustifyDates?/^(\d{2}|\d)[.-/](\d|\d{2})[.-/]\d{2}$/:null);
+var dateReg = (rightJustifyDates?/^(\d{2}|\d)[-./](\d|\d{2})[-./]\d{4}$/:null);
 
 function dataTable(data) {
   var keys = Object.keys(data[0]);
   var headers = keys.map(function(name) {
-    return new UnderlinedCell(new TextCell(name));
+    return new UnderlinedCell(new CTextCell(name));
   });
   var body = data.map(function(row) {
     return keys.map(function(name) {
@@ -26,7 +28,7 @@ function dataTable(data) {
       // This was changed:
       // Here is where new date type test will go
       if ((typeof value == "number"))
-        return new RTextCell(String(value));
+        return new CTextCell(String(value));
       else
         if(typeof value == "string" && value.match(dateReg))
 	  return new RTextCell(String(value));
@@ -37,4 +39,4 @@ function dataTable(data) {
   return [headers].concat(body);
 }
 
-print(drawTable(dataTable(LARDER_FILE)));
+print(drawTable(dataTable(CARS)));
